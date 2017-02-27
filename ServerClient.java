@@ -6,6 +6,7 @@
  * this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
+package ClientServer;
 
 import java.net.Socket;
 
@@ -14,7 +15,6 @@ import java.net.Socket;
  */
 public class ServerClient extends Client {
     private final Server server_;
-    private int id_ = 0;
 
     /**
      * CTOR for the serverclient.
@@ -29,19 +29,6 @@ public class ServerClient extends Client {
         server_ = server;
     }
 
-    /**
-     * @return the id
-     */
-    public int getId() {
-        return id_;
-    }
-
-    /**
-     * @param id sets the id.
-     */
-    public void setId(final int id) {
-        id_ = id;
-    }
 
     /**
      * Advices the server that a client has been lost. Doesn't matter if it's expected or not - he's gone.

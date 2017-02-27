@@ -6,6 +6,7 @@
  * this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
+package ClientServer;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -16,6 +17,7 @@ import java.util.List;
  * This is the class for the server.
  */
 public class Server extends SocketHelper {
+    long clientId = 0;
     Server server_ = this;
     private int port = 0;
     private ServerSocket serverSocket_;
@@ -120,11 +122,12 @@ public class Server extends SocketHelper {
                 System.out.println("Listening for incomming connections on port " + port);
                 serverSocket_ = new ServerSocket(port);
                 while (!canceled_) {
-                    ServerClient ServerClient = new ServerClient(serverSocket_.accept(), networkReceiver, server_);
-                    ServerClient.listen();
-                    ServerClient.setId(1);
-                    this.ServerClientList_.add(ServerClient);
-
+                    ServerClient serverClient = new ServerClient(serverSocket_.accept(), networkReceiver, server_);
+                    serverClient.listen();
+                    serverClient.setIdWithoutTransmission(clientId++);
+                    this.ServerClientList_.add(serverClient);
+                    System.out.println("Client connected from:" + serverClient.getClientSocket().getInetAddress() +
+                                               serverClient.getClientSocket().getPort());
                 }
 
             } catch (IOException e) {

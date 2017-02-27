@@ -6,6 +6,7 @@
  * this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
+package ClientServer;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -19,6 +20,7 @@ import java.net.Socket;
 public class Client extends SocketHelper {
     protected boolean canceled_ = false;
     protected Socket clientSocket_;
+    private long id_ = 0;
 
     /**
      * This constructor is used for a remote client
@@ -135,10 +137,8 @@ public class Client extends SocketHelper {
                         super.handleDisconnect();
                         return;
                     }
-                    if (msg.equals(EXPECT_DISCONNECT_MSG)) {
-                        EXPECT_DISCONNECT_FLAG(true);
+                    if (handleMessage(msg))
                         continue;
-                    }
                     networkReceiver.onNewMessage(msg);
                 } catch (IOException e) {
                     super.handleDisconnect();
@@ -146,6 +146,36 @@ public class Client extends SocketHelper {
             }
         }).start();
 
+    }
+
+    /**
+     * Handles a message
+     * returns true if the message is handled, false if not.
+     *
+     * @param msg
+     *
+     * @return
+     */
+    private boolean handleMessage(final String msg) {
+        if (msg.equals(EXPECT_DISCONNECT_MSG)) {
+            EXPECT_DISCONNECT_FLAG(true);
+            return true;
+        }
+        try {
+            String[] data = msg.split(DEL);
+            if (data[0].equals(SET_ID_MSG)) {
+                long tmpId = Long.parseLong(data[ID]);
+                System.out.println("ID: " + tmpId);
+                this.id_ = tmpId;
+                return true;
+            }
+
+        } catch (Exception e) {
+            System.out.println("ID error.");
+            return false;
+        }
+
+        return false;
     }
 
     /**
@@ -178,5 +208,23 @@ public class Client extends SocketHelper {
         networkReceiver.onUnexpectedDisconnect();
     }
 
+    /**
+     * @return the id
+     */
+    public long getId() {
+        return id_;
+    }
+
+    /**
+     * @param id sets the id, and transmits to the server
+     */
+    public void setId(final long id) {
+        transmitMessage(SET_ID_MSG + DEL + id);
+        id_ = id;
+    }
+
+    public void setIdWithoutTransmission(final long id) {
+        id_ = id;
+    }
 }
 
