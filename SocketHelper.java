@@ -13,7 +13,7 @@ abstract class SocketHelper {
     protected final int DISCONNECT_TIME_MS = 5000;
     protected final String EXPECT_DISCONNECT_MSG = "EXPECT_DISCONNECT";
     protected final String SET_ID_MSG = "SET_ID";
-    protected final int ID  = 1;
+    protected final int ID = 1;
     protected final String DEL = ":";
     private boolean EXPECT_DISCONNECT_FLAG = false;
 

@@ -165,7 +165,7 @@ public class Client extends SocketHelper {
             String[] data = msg.split(DEL);
             if (data[0].equals(SET_ID_MSG)) {
                 long tmpId = Long.parseLong(data[ID]);
-                System.out.println("ID: " + tmpId);
+                networkReceiver.onIdChange(this.id_, tmpId);
                 this.id_ = tmpId;
                 return true;
             }
@@ -183,6 +183,25 @@ public class Client extends SocketHelper {
      */
     public Socket getClientSocket() {
         return clientSocket_;
+    }
+
+    /**
+     * @return the id
+     */
+    public long getId() {
+        return id_;
+    }
+
+    /**
+     * @param id sets the id, and transmits to the server
+     */
+    public void setId(final long id) {
+        transmitMessage(SET_ID_MSG + DEL + id);
+        id_ = id;
+    }
+
+    public void setIdWithoutTransmission(final long id) {
+        id_ = id;
     }
 
     /**
@@ -206,25 +225,6 @@ public class Client extends SocketHelper {
         System.out.println("Client: Unexpected disconnect\nKilling sockets.");
         finalizeSockets();
         networkReceiver.onUnexpectedDisconnect();
-    }
-
-    /**
-     * @return the id
-     */
-    public long getId() {
-        return id_;
-    }
-
-    /**
-     * @param id sets the id, and transmits to the server
-     */
-    public void setId(final long id) {
-        transmitMessage(SET_ID_MSG + DEL + id);
-        id_ = id;
-    }
-
-    public void setIdWithoutTransmission(final long id) {
-        id_ = id;
     }
 }
 

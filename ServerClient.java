@@ -29,7 +29,6 @@ public class ServerClient extends Client {
         server_ = server;
     }
 
-
     /**
      * Advices the server that a client has been lost. Doesn't matter if it's expected or not - he's gone.
      */

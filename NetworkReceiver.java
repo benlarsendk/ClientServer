@@ -14,4 +14,6 @@ public interface NetworkReceiver {
     public void onUnexpectedDisconnect();
 
     void onNewClient(long id);
+
+    void onIdChange(long old, long newId);
 }

@@ -18,4 +18,9 @@ public class VerboseReceiver implements NetworkReceiver {
     public void onNewClient(final long id) {
         System.out.println("Oh, a new client with ID: " + id);
     }
+
+    @Override
+    public void onIdChange(final long old, final long newId) {
+        System.out.println("Old client: " + old + " got new ID: " + newId);
+    }
 }
