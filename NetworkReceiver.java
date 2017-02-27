@@ -12,4 +12,6 @@ public interface NetworkReceiver {
     public void onNewMessage(String message);
 
     public void onUnexpectedDisconnect();
+
+    void onNewClient(long id);
 }

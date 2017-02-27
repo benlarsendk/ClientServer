@@ -13,4 +13,9 @@ public class VerboseReceiver implements NetworkReceiver {
     public void onUnexpectedDisconnect() {
         System.out.println("I should totally handle this unexpected disconnect.");
     }
+
+    @Override
+    public void onNewClient(final long id) {
+        System.out.println("Oh, a new client with ID: " + id);
+    }
 }

@@ -126,6 +126,7 @@ public class Server extends SocketHelper {
                     serverClient.listen();
                     serverClient.setIdWithoutTransmission(clientId++);
                     this.ServerClientList_.add(serverClient);
+                    networkReceiver.onNewClient(serverClient.getId());
                     System.out.println("Client connected from:" + serverClient.getClientSocket().getInetAddress() +
                                                serverClient.getClientSocket().getPort());
                 }
