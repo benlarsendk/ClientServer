@@ -37,14 +37,13 @@ public class Example {
         /* DISCONNECT - RECONNECT*/
 
         client_1.disconnect(); // The client informs the server of an upcomming disconnect.
-        client_1.connectAndListen(LOCALHOST,1234);
+        client_1.connectAndListen(LOCALHOST, 1234);
         client_1.setId(25); // The server can not remember the ID.
 
         Thread.sleep(50);
 
         client_1.transmitMessage("Sorry server, I f***** up.");
-        server.transmitMessage(25,"Totally OK, client #1");
-
+        server.transmitMessage(25, "Totally OK, client #1");
 
     }
 
