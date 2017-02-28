@@ -1,9 +1,11 @@
 package ClientServer;
 
+import java.io.IOException;
+
 public class Example {
     static String LOCALHOST = "127.0.0.1";
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
 
         /* These receivers can handle incomming messages or errors*/
         VerboseReceiver serverReceiver = new VerboseReceiver();
@@ -18,8 +20,8 @@ public class Example {
 
         server.startListening(1234); // Set the server in listen state
 
-        client_1.connectAndListen(LOCALHOST, 1234); // Connect - gets standard ID 1
-        client_2.connectAndListen(LOCALHOST, 1234); // Connect - gets standard ID 2
+        client_1.connectAndListen(LOCALHOST, 1234); // Connect - gets standard ID 0
+        client_2.connectAndListen(LOCALHOST, 1234); // Connect - gets standard ID 1
 
         client_1.transmitMessage("Hi', I'm Client #1");
         client_2.transmitMessage("Hi', I'm Client #2");
@@ -28,10 +30,10 @@ public class Example {
 
         // Due to the asynchronous nature of the software, we sleep a little.
         Thread.sleep(50);
+        System.out.println("Client 2id: " + client_2.getId());
 
-        server.transmitMessage("1", "Hi #1");
-        server.transmitMessage("ABC123", "Hi #2"); // We changed the ID from the clientside.*/
-
+        server.transmitMessage("ABC123", "Hi #1"); // We changed the ID from the clientside.*/
+        server.transmitMessage("1", "Hi #2");
 
 
         /* DISCONNECT - RECONNECT*/
@@ -44,6 +46,17 @@ public class Example {
 
         client_1.transmitMessage("Sorry server, I f***** up.");
         server.transmitMessage("ABC123", "Totally OK, client #1");
+        
+        // BAD DISCONNECT
+        
+        /* This would normally make the server throw an exception. In this case it will simply call the
+        *  network receivers evenhandler, for unexepected disconnects*/
+        client_1.getClientSocket().close();
+        
+        // Client 2 is still working
+        server.transmitMessage("1", "Ya'll OK?");
+        client_2.transmitMessage("#Persistent");
+        
 
     }
 
