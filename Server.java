@@ -78,9 +78,9 @@ public class Server extends SocketHelper {
      * @param id  the ServerClient id
      * @param msg the message for the ServerClient.
      */
-    public void transmitMessage(int id, String msg) {
+    public void transmitMessage(String id, String msg) {
         for (ServerClient ServerClient : ServerClientList_) {
-            if (ServerClient.getId() == id) {
+            if (ServerClient.getId().equals(id)) {
                 ServerClient.transmitMessage(msg);
                 return;
             }
@@ -124,7 +124,7 @@ public class Server extends SocketHelper {
                 while (!canceled_) {
                     ServerClient serverClient = new ServerClient(serverSocket_.accept(), networkReceiver, server_);
                     serverClient.listen();
-                    serverClient.setIdWithoutTransmission(clientId++);
+                    serverClient.setIdWithoutTransmission(Long.toString(clientId++));
                     this.ServerClientList_.add(serverClient);
                     networkReceiver.onNewClient(serverClient.getId());
                     System.out.println("Client connected from:" + serverClient.getClientSocket().getInetAddress() +

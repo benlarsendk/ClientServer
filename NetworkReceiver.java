@@ -9,11 +9,11 @@
 package ClientServer;
 
 public interface NetworkReceiver {
-    public void onNewMessage(String message);
-
-    public void onUnexpectedDisconnect();
-
-    void onNewClient(long id);
-
-    void onIdChange(long old, long newId);
+    void onNewMessage(String message);
+    
+    void onUnexpectedDisconnect();
+    
+    void onNewClient(String id);
+    
+    void onIdChange(String old, String newId);
 }

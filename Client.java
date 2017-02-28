@@ -20,7 +20,7 @@ import java.net.Socket;
 public class Client extends SocketHelper {
     protected boolean canceled_ = false;
     protected Socket clientSocket_;
-    private long id_ = 0;
+    private String id_ = "0";
 
     /**
      * This constructor is used for a remote client
@@ -164,7 +164,7 @@ public class Client extends SocketHelper {
         try {
             String[] data = msg.split(DEL);
             if (data[0].equals(SET_ID_MSG)) {
-                long tmpId = Long.parseLong(data[ID]);
+                String tmpId = data[ID];
                 networkReceiver.onIdChange(this.id_, tmpId);
                 this.id_ = tmpId;
                 return true;
@@ -188,19 +188,19 @@ public class Client extends SocketHelper {
     /**
      * @return the id
      */
-    public long getId() {
+    public String getId() {
         return id_;
     }
 
     /**
      * @param id sets the id, and transmits to the server
      */
-    public void setId(final long id) {
+    public void setId(final String id) {
         transmitMessage(SET_ID_MSG + DEL + id);
         id_ = id;
     }
 
-    public void setIdWithoutTransmission(final long id) {
+    public void setIdWithoutTransmission(final String id) {
         id_ = id;
     }
 

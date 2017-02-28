@@ -24,13 +24,13 @@ public class Example {
         client_1.transmitMessage("Hi', I'm Client #1");
         client_2.transmitMessage("Hi', I'm Client #2");
 
-        client_1.setId(25); // Sets the ID to 25, notfies the server.
+        client_1.setId("ABC123"); // Sets the ID to 25, notfies the server.
 
         // Due to the asynchronous nature of the software, we sleep a little.
         Thread.sleep(50);
 
-        server.transmitMessage(1, "Hi #1");
-        server.transmitMessage(25, "Hi #2"); // We changed the ID from the clientside.*/
+        server.transmitMessage("1", "Hi #1");
+        server.transmitMessage("ABC123", "Hi #2"); // We changed the ID from the clientside.*/
 
 
 
@@ -38,12 +38,12 @@ public class Example {
 
         client_1.disconnect(); // The client informs the server of an upcomming disconnect.
         client_1.connectAndListen(LOCALHOST, 1234);
-        client_1.setId(25); // The server can not remember the ID.
+        client_1.setId("ABC123"); // The server can not remember the ID.
 
         Thread.sleep(50);
 
         client_1.transmitMessage("Sorry server, I f***** up.");
-        server.transmitMessage(25, "Totally OK, client #1");
+        server.transmitMessage("ABC123", "Totally OK, client #1");
 
     }
 

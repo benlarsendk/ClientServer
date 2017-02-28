@@ -15,7 +15,7 @@ import java.net.Socket;
  */
 public class ServerClient extends Client {
     private final Server server_;
-
+    
     /**
      * CTOR for the serverclient.
      *
@@ -28,7 +28,7 @@ public class ServerClient extends Client {
         clientSocket_ = clientSocket;
         server_ = server;
     }
-
+    
     /**
      * Advices the server that a client has been lost. Doesn't matter if it's expected or not - he's gone.
      */
@@ -38,7 +38,7 @@ public class ServerClient extends Client {
         this.canceled_ = true;
         finalizeSockets();
     }
-
+    
     /**
      * Advices the server that a client has been lost. Doesn't matter if it's expected or not - he's gone.
      * Advices the receiver that an unexpected disconnect has happened
@@ -50,5 +50,5 @@ public class ServerClient extends Client {
         finalizeSockets();
         networkReceiver.onUnexpectedDisconnect();
     }
-
+    
 }
