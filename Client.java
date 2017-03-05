@@ -6,7 +6,6 @@
  * this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
-package ClientServer;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -21,6 +20,8 @@ public class Client extends SocketHelper {
     protected boolean canceled_ = false;
     protected Socket clientSocket_;
     private String id_ = "0";
+    DataOutputStream outToServer = null;
+    BufferedReader inFromClient = null;
 
     /**
      * This constructor is used for a remote client
@@ -71,9 +72,9 @@ public class Client extends SocketHelper {
             return;
         }
 
-        DataOutputStream outToServer = null;
         try {
-            outToServer = new DataOutputStream(clientSocket_.getOutputStream());
+            if(outToServer == null)
+                outToServer = new DataOutputStream(clientSocket_.getOutputStream());
             outToServer.writeBytes(message + '\n');
         } catch (IOException e) {
             System.out.println("Error while writing to socket - message not delivered");
@@ -88,8 +89,11 @@ public class Client extends SocketHelper {
     public void finalizeSockets() {
         if (clientSocket_ != null && clientSocket_.isBound()) {
             try {
-                if (!clientSocket_.isClosed())
+                if (!clientSocket_.isClosed()) {
                     clientSocket_.close();
+                    inFromClient = null;
+                    outToServer = null;
+                }
             } catch (IOException e) {
                 System.out.println("Couldn't close clientsocket");
             }
@@ -130,8 +134,10 @@ public class Client extends SocketHelper {
                         return;
                     }
                     clientSocket_.setSoTimeout(0);
-                    BufferedReader inFromClient = new BufferedReader(new InputStreamReader(clientSocket_
-                                                                                                   .getInputStream()));
+                    if(inFromClient == null){
+                        InputStreamReader inputStreamReader = new InputStreamReader(clientSocket_.getInputStream());
+                        inFromClient = new BufferedReader(inputStreamReader);
+                    }
                     String msg = inFromClient.readLine();
                     if (msg == null) {
                         super.handleDisconnect();
@@ -227,4 +233,6 @@ public class Client extends SocketHelper {
         networkReceiver.onUnexpectedDisconnect();
     }
 }
+
+
 
